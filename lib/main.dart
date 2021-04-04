@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'main_model.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,20 +14,25 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: Scaffold(
-            appBar: AppBar(
-              title: Text(text),
-            ),
-            body: Center(
-                child: Column(
-              children: [
-                Text(text, style: TextStyle(fontSize: 30)),
-                RaisedButton(
-                    onPressed: () {
-                      print(text);
-                    },
-                    child: Text('iii'))
-              ],
-            ))));
+        home: ChangeNotifierProvider<MainModel>(
+            create: (_) => MainModel(),
+            child: Scaffold(
+                appBar: AppBar(
+                  title: Text("text"),
+                ),
+                body: Consumer<MainModel>(
+                  builder: (context, model, child) {
+                    return Center(
+                        child: Column(children: [
+                      Text(model.text, style: TextStyle(fontSize: 30)),
+                      RaisedButton(
+                          onPressed: () {
+                            model.changeText();
+                            print(model.text);
+                          },
+                          child: Text('iii'))
+                    ]));
+                  },
+                ))));
   }
 }
